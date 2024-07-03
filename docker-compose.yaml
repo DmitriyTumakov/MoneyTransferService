@@ -1,0 +1,8 @@
+version: '1'
+
+services:
+  transfer:
+    build:
+      ./
+    ports:
+      - "5500:5500"
