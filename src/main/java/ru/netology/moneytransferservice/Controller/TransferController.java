@@ -17,9 +17,8 @@ public class TransferController {
 
     @CrossOrigin
     @PostMapping("transfer")
-    public String transfer(@RequestBody Operation fromAccount) {
-        System.out.println(fromAccount.toString());
-        return service.transfer(fromAccount);
+    public String transfer(@RequestBody Operation operation) {
+        return service.transfer(operation);
     }
 
     @CrossOrigin
