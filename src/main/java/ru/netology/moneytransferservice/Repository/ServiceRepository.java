@@ -14,6 +14,11 @@ public class ServiceRepository {
     private final AtomicInteger operationCounter = new AtomicInteger(0);
     private String operationId;
 
+    public ServiceRepository() {
+        addCard(new Card("1234567887654321", "10/25", "120"));
+        addCard(new Card("8765432112345678", "02/27", "526"));
+    }
+
     public ConcurrentHashMap<String, Card> getCardRepository() {
         return cardRepository;
     }

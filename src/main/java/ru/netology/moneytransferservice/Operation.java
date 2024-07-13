@@ -1,6 +1,5 @@
 package ru.netology.moneytransferservice;
 
-import java.util.concurrent.ConcurrentHashMap;
 
 public class Operation {
     private final String cardFromNumber;

@@ -71,7 +71,7 @@ public class TransferService {
     }
 
     private void logOperationAccepted(Operation operation) {
-        logger.log("[" + LocalDateTime.now() + "] Operation confirmed: " +
+        logger.log("[" + LocalDateTime.now() + "] " +
                 operation.getFromCard() + " -> " +
                 operation.getToCard() + " | Сумма перевода: " +
                 operation.getMoneyValue() + "₽ | Сумма комиссии: " +
@@ -79,7 +79,7 @@ public class TransferService {
     }
 
     private void logOperationDenied(Operation operation) {
-        logger.log("[" + LocalDateTime.now() + "] Operation confirmed: " +
+        logger.log("[" + LocalDateTime.now() + "] " +
                 operation.getFromCard() + " -> " +
                 operation.getToCard() + " | Сумма перевода: " +
                 operation.getMoneyValue() + "₽ | Сумма комиссии: " +

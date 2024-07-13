@@ -10,10 +10,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.netology.moneytransferservice.Repository.ServiceRepository;
 
 import java.io.IOException;
+import java.util.Map;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MoneyTransferServiceApplicationTests {
@@ -21,9 +20,6 @@ class MoneyTransferServiceApplicationTests {
     TestRestTemplate restTemplate;
 
     GenericContainer<?> container = new GenericContainer<>("transferservice").withExposedPorts(5500);
-    private final Card card = Mockito.mock(Card.class);
-    @Autowired
-    private ServiceRepository serviceRepository;
 
     @BeforeEach
     void setUp() {
@@ -32,18 +28,20 @@ class MoneyTransferServiceApplicationTests {
 
     @Test
     void contextLoads() throws IOException, InterruptedException {
-        Operation operation = new Operation("1234567887654321",
-                "8765432112345678",
-                "120",
-                "10/25",
-                new Amount("RUR", 120));
-
-        container.execInContainer(String.valueOf(serviceRepository.getCardRepository().put("1234567887654321", card)));
-        container.execInContainer(String.valueOf(serviceRepository.getCardRepository().put("8765432112345678", card)));
+        var request = Map.ofEntries(
+                Map.entry("cardFromNumber", "1234567887654321"),
+                Map.entry("cardToNumber", "8765432112345678"),
+                Map.entry("cardFromCVV", "120"),
+                Map.entry("cardFromValidTill", "10/25"),
+                Map.entry("amount", Map.ofEntries(
+                        Map.entry("currency", "RUR"),
+                        Map.entry("value", 1000)
+                ))
+        );
 
         ResponseEntity<String> result = restTemplate.postForEntity("http://localhost:" +
                 container.getMappedPort(5500) + "/transfer",
-                operation, String.class);
+                request, String.class);
 
         System.out.println(container.getLogs());
         Assertions.assertEquals(HttpStatusCode.valueOf(200), result.getStatusCode());
